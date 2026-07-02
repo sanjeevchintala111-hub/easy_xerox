@@ -1,0 +1,96 @@
+<%- include('partials/header') %>
+
+<section class="section narrow">
+  <div class="section-heading center">
+    <span class="badge">Upload</span>
+    <h1>Upload Xerox Documents</h1>
+    <p>Fill details carefully. Page count and final amount will be shown before order submission.</p>
+  </div>
+
+  <div class="guidelines card">
+    <h3>Customer Guidelines</h3>
+    <ul>
+      <li>Upload only clear PDFs/images/documents.</li>
+      <li>PDF page count is calculated automatically. DOC/DOCX count is demo estimate only.</li>
+      <li>Mention branch, year, section, floor/classroom correctly.</li>
+      <li>Payment must be completed before printing.</li>
+      <li>Contact support if upload or payment has any issue.</li>
+    </ul>
+  </div>
+
+  <form class="form card" method="POST" action="/orders/preview" enctype="multipart/form-data" id="uploadForm">
+    <h2>Student Details</h2>
+    <div class="form-grid two">
+      <label>
+        Full Name *
+        <input name="name" type="text" required placeholder="Example: Sanju Chintal" />
+        <small>Enter the name admin can call during handover.</small>
+      </label>
+      <label>
+        Phone Number *
+        <input name="phone" type="tel" required placeholder="Example: 9876543210" />
+        <small>Used only for order updates and WhatsApp support.</small>
+      </label>
+      <label>
+        Branch Name *
+        <input name="branch" type="text" required placeholder="Example: CSE / ECE / Mechanical" />
+        <small>Enter your department/branch name.</small>
+      </label>
+      <label>
+        Year / Section *
+        <input name="yearSection" type="text" required placeholder="Example: 2nd Year - A Section" />
+        <small>Helps admin separate orders class-wise.</small>
+      </label>
+      <label class="full">
+        Floor / Classroom / Delivery Place *
+        <input name="deliveryPlace" type="text" required placeholder="Example: 2nd floor, CSE-A classroom" />
+        <small>Where do you want to receive or collect the Xerox?</small>
+      </label>
+      <label class="full">
+        Notes / Instructions
+        <textarea name="instructions" rows="4" placeholder="Example: Print Unit-1 first, staple all copies, urgent before lunch"></textarea>
+        <small>Add special instructions like staple, urgent, unit-wise printing, etc.</small>
+      </label>
+    </div>
+
+    <h2>Xerox Options</h2>
+    <div class="form-grid two">
+      <label>
+        Xerox Type *
+        <select name="xeroxType" required>
+          <option value="single">Single side Xerox</option>
+          <option value="double">Double side Xerox</option>
+          <option value="fourInOne">4 pages in 1 sheet</option>
+        </select>
+        <small>Choose how the pages should be printed.</small>
+      </label>
+      <label>
+        Print Color *
+        <select name="printColor" required>
+          <option value="bw">Black and White</option>
+          <option value="color">Color Xerox</option>
+        </select>
+        <small>Color printing uses color price per page.</small>
+      </label>
+      <label>
+        Number of Copies *
+        <input name="copies" type="number" min="1" value="1" required />
+        <small>Example: 2 copies means every page will be printed twice.</small>
+      </label>
+    </div>
+
+    <h2>Upload Files</h2>
+    <label class="file-drop">
+      <input name="documents" id="documents" type="file" multiple required accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" />
+      <span>Click to choose multiple files</span>
+      <small>Supported: PDF, JPG, PNG, JPEG, DOC, DOCX. Max 20 files.</small>
+    </label>
+    <div id="fileList" class="file-list"></div>
+
+    <button class="btn primary full-width" type="submit" id="submitBtn">Analyze Files & Continue</button>
+    <p class="muted small center">Your order is created only after you review the amount and confirm.</p>
+  </form>
+</section>
+
+<script src="/js/upload.js"></script>
+<%- include('partials/footer') %>

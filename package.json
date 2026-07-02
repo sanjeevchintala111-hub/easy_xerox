@@ -1,0 +1,37 @@
+{
+  "name": "college-xerox-order-management",
+  "version": "1.0.0",
+  "description": "College Xerox Order Management Website with customer upload, page count, UPI demo payment, and admin dashboard.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "hash:password": "node scripts/hash-password.js"
+  },
+  "keywords": [
+    "college",
+    "xerox",
+    "printing",
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
+  "author": "Sanjiv Chintal",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "helmet": "^8.0.0",
+    "mongoose": "^8.9.5",
+    "multer": "^1.4.5-lts.1",
+    "pdf-lib": "^1.17.1",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

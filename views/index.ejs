@@ -1,0 +1,81 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+  <div class="hero-content">
+    <span class="badge">College Xerox Made Simple</span>
+    <h1>Upload notes online. Pay by UPI. Collect Xerox without confusion.</h1>
+    <p>
+      Students can upload PDFs/images, calculate pages and cost, pay online, and get a clear order ID for pickup or classroom handover.
+    </p>
+    <div class="hero-actions">
+      <a class="btn primary" href="/upload">Upload Documents</a>
+      <a class="btn secondary" href="#how">How it Works</a>
+    </div>
+  </div>
+  <div class="hero-card">
+    <h3>Today’s Quick Pricing</h3>
+    <div class="price-row"><span>Single side B/W</span><strong>₹<%= settings.singleSideRate %>/page</strong></div>
+    <div class="price-row"><span>Double side B/W</span><strong>₹<%= settings.doubleSideRate %>/page</strong></div>
+    <div class="price-row"><span>4 pages in 1</span><strong>₹<%= settings.fourInOneRate %>/page</strong></div>
+    <div class="price-row"><span>Color print</span><strong>₹<%= settings.colorRate %>/page</strong></div>
+    <p class="muted small">Admin can update all prices from the dashboard.</p>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="section-heading">
+    <span class="badge">Process</span>
+    <h2>How it works</h2>
+  </div>
+  <div class="grid three">
+    <div class="card step-card">
+      <span class="step-number">1</span>
+      <h3>Upload</h3>
+      <p>Enter your details, select Xerox options, and upload PDFs/images/documents.</p>
+    </div>
+    <div class="card step-card">
+      <span class="step-number">2</span>
+      <h3>Review & Pay</h3>
+      <p>The website counts PDF pages, calculates amount, applies discount, and shows UPI QR.</p>
+    </div>
+    <div class="card step-card">
+      <span class="step-number">3</span>
+      <h3>Collect</h3>
+      <p>Admin prints the documents and updates the order status until delivered.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section soft">
+  <div class="section-heading">
+    <span class="badge">Pricing</span>
+    <h2>Simple student-friendly pricing</h2>
+  </div>
+  <div class="grid four">
+    <div class="pricing-card"><h3>Single Side</h3><p>₹<%= settings.singleSideRate %></p><span>Best for assignments</span></div>
+    <div class="pricing-card"><h3>Double Side</h3><p>₹<%= settings.doubleSideRate %></p><span>Save paper</span></div>
+    <div class="pricing-card"><h3>4 in 1</h3><p>₹<%= settings.fourInOneRate %></p><span>Best for notes</span></div>
+    <div class="pricing-card"><h3>Color</h3><p>₹<%= settings.colorRate %></p><span>Charts and images</span></div>
+  </div>
+  <div class="discount-box">
+    <strong>Auto Discount:</strong>
+    Upload at least <%= settings.discountMinPdfs %> PDFs with <%= settings.discountMinPagesPerPdf %>+ pages each and get <%= settings.discountPercentage %>% discount automatically.
+  </div>
+</section>
+
+<section class="section">
+  <div class="grid two align-center">
+    <div>
+      <span class="badge">Support</span>
+      <h2>Need help with your order?</h2>
+      <p>Contact admin through WhatsApp. The confirmation page automatically includes your order ID and name.</p>
+    </div>
+    <div class="card support-card">
+      <h3>WhatsApp Support</h3>
+      <p>Ask about payment, pickup time, print options, or wrong upload.</p>
+      <a class="btn whatsapp" target="_blank" href="https://wa.me/<%= settings.whatsappNumber %>">Chat on WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

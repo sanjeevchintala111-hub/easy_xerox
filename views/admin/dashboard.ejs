@@ -1,0 +1,58 @@
+<%- include('../partials/header') %>
+
+<section class="section">
+  <div class="section-heading">
+    <span class="badge">Admin Panel</span>
+    <h1>Dashboard</h1>
+    <p>Track orders, revenue, payment status, and printing progress.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><span>Total Orders</span><strong><%= stats.totalOrders %></strong></div>
+    <div class="stat-card"><span>Pending Orders</span><strong><%= stats.pendingOrders %></strong></div>
+    <div class="stat-card"><span>Paid Orders</span><strong><%= stats.paidOrders %></strong></div>
+    <div class="stat-card"><span>Completed</span><strong><%= stats.completedOrders %></strong></div>
+    <div class="stat-card"><span>Today’s Orders</span><strong><%= stats.todayOrders %></strong></div>
+    <div class="stat-card"><span>Total Revenue</span><strong>₹<%= stats.totalRevenue.toFixed ? stats.totalRevenue.toFixed(2) : stats.totalRevenue %></strong></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>Recent Orders</h2>
+      <a class="btn secondary small-btn" href="/admin/orders">View All</a>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Pages</th>
+            <th>Amount</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (recentOrders.length === 0) { %>
+            <tr><td colspan="7" class="center">No orders yet.</td></tr>
+          <% } %>
+          <% recentOrders.forEach((order) => { %>
+            <tr>
+              <td><%= order.orderId %></td>
+              <td><%= order.customer.name %></td>
+              <td><%= order.summary.totalPages %></td>
+              <td>₹<%= order.summary.totalAmount %></td>
+              <td><span class="status <%= order.paymentStatus.toLowerCase() %>"><%= order.paymentStatus %></span></td>
+              <td><%= order.orderStatus %></td>
+              <td><a href="/admin/orders/<%= order.orderId %>">Open</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

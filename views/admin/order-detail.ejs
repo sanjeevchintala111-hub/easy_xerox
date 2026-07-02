@@ -1,0 +1,91 @@
+<%- include('../partials/header') %>
+
+<section class="section">
+  <div class="section-heading">
+    <span class="badge">Order Detail</span>
+    <h1><%= order.orderId %></h1>
+    <p>Created: <%= new Date(order.createdAt).toLocaleString() %></p>
+  </div>
+
+  <div class="grid two">
+    <div class="card">
+      <h2>Customer Details</h2>
+      <p><strong>Name:</strong> <%= order.customer.name %></p>
+      <p><strong>Phone:</strong> <%= order.customer.phone %></p>
+      <p><strong>Branch:</strong> <%= order.customer.branch %></p>
+      <p><strong>Year/Section:</strong> <%= order.customer.yearSection %></p>
+      <p><strong>Handover Place:</strong> <%= order.customer.deliveryPlace %></p>
+      <p><strong>Instructions:</strong> <%= order.customer.instructions || '-' %></p>
+      <a class="btn whatsapp" target="_blank" href="<%= customerWhatsappLink %>">Contact Customer</a>
+    </div>
+
+    <div class="card">
+      <h2>Amount</h2>
+      <div class="amount-box compact">
+        <div><span>Total pages</span><strong><%= order.summary.totalPages %></strong></div>
+        <div><span>Effective pages</span><strong><%= order.summary.effectivePages %></strong></div>
+        <div><span>Rate</span><strong>₹<%= order.summary.ratePerPage %></strong></div>
+        <div><span>Subtotal</span><strong>₹<%= order.summary.subtotal %></strong></div>
+        <div><span>Discount</span><strong>₹<%= order.summary.discountAmount %></strong></div>
+        <div class="grand-total"><span>Total</span><strong>₹<%= order.summary.totalAmount %></strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Uploaded Files</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>#</th><th>File</th><th>Type</th><th>Pages</th><th>Note</th><th>Download</th></tr>
+        </thead>
+        <tbody>
+          <% order.files.forEach((file, index) => { %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><%= file.originalName %></td>
+              <td><%= file.fileType %></td>
+              <td><%= file.pages %></td>
+              <td><%= file.note || '-' %></td>
+              <td><a href="/admin/orders/<%= order.orderId %>/download/<%= index %>">Download</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Update Order</h2>
+    <form method="POST" action="/admin/orders/<%= order.orderId %>/update" class="form compact-form">
+      <div class="form-grid two">
+        <label>
+          Payment Status
+          <select name="paymentStatus">
+            <% paymentStatuses.forEach((status) => { %>
+              <option value="<%= status %>" <%= order.paymentStatus === status ? 'selected' : '' %>><%= status %></option>
+            <% }) %>
+          </select>
+          <small>Manually verify UPI payment and mark Paid.</small>
+        </label>
+        <label>
+          Order Status
+          <select name="orderStatus">
+            <% statuses.forEach((status) => { %>
+              <option value="<%= status %>" <%= order.orderStatus === status ? 'selected' : '' %>><%= status %></option>
+            <% }) %>
+          </select>
+          <small>Change printing progress.</small>
+        </label>
+        <label class="full">
+          Admin Note
+          <textarea name="adminNote" rows="4" placeholder="Example: Payment screenshot received, print after lunch"><%= order.adminNote || '' %></textarea>
+          <small>This note is for admin tracking.</small>
+        </label>
+      </div>
+      <button class="btn primary" type="submit">Save Changes</button>
+    </form>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

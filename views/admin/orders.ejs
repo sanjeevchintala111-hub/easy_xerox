@@ -1,0 +1,56 @@
+<%- include('../partials/header') %>
+
+<section class="section">
+  <div class="section-heading">
+    <span class="badge">Orders</span>
+    <h1>Order Management</h1>
+    <p>Open any order to download files, contact customer, and update status.</p>
+  </div>
+
+  <div class="card filters">
+    <a class="chip-link <%= !status ? 'selected' : '' %>" href="/admin/orders">All</a>
+    <% ['Pending','Paid','Printing','Ready for Pickup','Delivered','Cancelled'].forEach((item) => { %>
+      <a class="chip-link <%= status === item ? 'selected' : '' %>" href="/admin/orders?status=<%= encodeURIComponent(item) %>"><%= item %></a>
+    <% }) %>
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Branch</th>
+            <th>Pages</th>
+            <th>Amount</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Open</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (orders.length === 0) { %>
+            <tr><td colspan="9" class="center">No matching orders found.</td></tr>
+          <% } %>
+          <% orders.forEach((order) => { %>
+            <tr>
+              <td><%= order.orderId %></td>
+              <td><%= new Date(order.createdAt).toLocaleString() %></td>
+              <td><%= order.customer.name %></td>
+              <td><%= order.customer.branch %></td>
+              <td><%= order.summary.totalPages %></td>
+              <td>₹<%= order.summary.totalAmount %></td>
+              <td><span class="status <%= order.paymentStatus.toLowerCase() %>"><%= order.paymentStatus %></span></td>
+              <td><%= order.orderStatus %></td>
+              <td><a href="/admin/orders/<%= order.orderId %>">View</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

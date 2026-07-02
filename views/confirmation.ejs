@@ -1,0 +1,55 @@
+<%- include('partials/header') %>
+
+<section class="section narrow">
+  <div class="card success-card center">
+    <span class="big-check">✓</span>
+    <h1>Order Submitted Successfully</h1>
+    <p>Your Xerox order is created. Admin will verify payment and start printing.</p>
+    <h2><%= order.orderId %></h2>
+    <div class="chips center-chips">
+      <span>Payment: <%= order.paymentStatus %></span>
+      <span>Status: <%= order.orderStatus %></span>
+      <span>Total: ₹<%= order.summary.totalAmount %></span>
+    </div>
+  </div>
+
+  <div class="grid two">
+    <div class="card">
+      <h3>Customer Details</h3>
+      <p><strong>Name:</strong> <%= order.customer.name %></p>
+      <p><strong>Phone:</strong> <%= order.customer.phone %></p>
+      <p><strong>Branch:</strong> <%= order.customer.branch %></p>
+      <p><strong>Year/Section:</strong> <%= order.customer.yearSection %></p>
+      <p><strong>Handover Place:</strong> <%= order.customer.deliveryPlace %></p>
+      <p><strong>Instructions:</strong> <%= order.customer.instructions || '-' %></p>
+    </div>
+    <div class="card">
+      <h3>Order Summary</h3>
+      <p><strong>Total Pages:</strong> <%= order.summary.totalPages %></p>
+      <p><strong>Copies:</strong> <%= order.options.copies %></p>
+      <p><strong>Total Amount:</strong> ₹<%= order.summary.totalAmount %></p>
+      <p><strong>Expected Handover:</strong> Please collect after admin marks Ready for Pickup.</p>
+      <a class="btn whatsapp" target="_blank" href="<%= whatsappLink %>">WhatsApp Support</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Files Summary</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>File</th><th>Type</th><th>Pages</th></tr></thead>
+        <tbody>
+          <% order.files.forEach((file) => { %>
+            <tr>
+              <td><%= file.originalName %></td>
+              <td><%= file.fileType %></td>
+              <td><%= file.pages %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

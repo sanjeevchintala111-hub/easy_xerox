@@ -1,0 +1,92 @@
+<%- include('partials/header') %>
+
+<section class="section narrow">
+  <div class="section-heading center">
+    <span class="badge">Review</span>
+    <h1>Review Order & Pay</h1>
+    <p>Check your page count and amount before submitting the order.</p>
+  </div>
+
+  <div class="card summary-card">
+    <div class="summary-top">
+      <div>
+        <h2>Order ID: <%= pendingOrder.orderId %></h2>
+        <p class="muted">Name: <%= pendingOrder.customer.name %> | Phone: <%= pendingOrder.customer.phone %></p>
+      </div>
+      <span class="status pending">Payment Pending</span>
+    </div>
+
+    <h3>Uploaded Files</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>File Name</th>
+            <th>Type</th>
+            <th>Pages</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% pendingOrder.files.forEach((file) => { %>
+            <tr>
+              <td><%= file.originalName %></td>
+              <td><%= file.fileType.toUpperCase() %></td>
+              <td><%= file.pages %></td>
+              <td><%= file.note || '-' %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Xerox Options</h3>
+    <div class="chips">
+      <span><%= pendingOrder.options.xeroxType === 'fourInOne' ? '4 pages in 1' : pendingOrder.options.xeroxType === 'double' ? 'Double side' : 'Single side' %></span>
+      <span><%= pendingOrder.options.printColor === 'color' ? 'Color' : 'Black & White' %></span>
+      <span><%= pendingOrder.options.copies %> copy/copies</span>
+    </div>
+
+    <h3>Amount Summary</h3>
+    <div class="amount-box">
+      <div><span>Total original pages</span><strong><%= pendingOrder.summary.totalPages %></strong></div>
+      <div><span>Effective pages after copies</span><strong><%= pendingOrder.summary.effectivePages %></strong></div>
+      <div><span>Rate per page</span><strong>₹<%= pendingOrder.summary.ratePerPage %></strong></div>
+      <div><span>Subtotal</span><strong>₹<%= pendingOrder.summary.subtotal %></strong></div>
+      <div><span>Discount</span><strong>- ₹<%= pendingOrder.summary.discountAmount %></strong></div>
+      <% if (pendingOrder.summary.minimumOrderAdjustment > 0) { %>
+        <div><span>Minimum order adjustment</span><strong>₹<%= pendingOrder.summary.minimumOrderAdjustment %></strong></div>
+      <% } %>
+      <div class="grand-total"><span>Total Amount</span><strong>₹<%= pendingOrder.summary.totalAmount %></strong></div>
+    </div>
+
+    <% if (pendingOrder.summary.discountApplied) { %>
+      <div class="alert success">Discount applied automatically.</div>
+    <% } else { %>
+      <div class="alert info">Discount not applied. Rule: minimum <%= settings.discountMinPdfs %> PDFs with <%= settings.discountMinPagesPerPdf %>+ pages each.</div>
+    <% } %>
+  </div>
+
+  <div class="card payment-card">
+    <h2>UPI Payment</h2>
+    <p>Scan the QR code or open the UPI payment link. This is a safe demo payment flow. Admin must verify payment and mark it as Paid.</p>
+    <div class="payment-grid">
+      <img class="qr" src="<%= qrDataUrl %>" alt="UPI QR Code" />
+      <div>
+        <p><strong>Pay to:</strong> <%= settings.shopName %></p>
+        <p><strong>UPI ID:</strong> <%= settings.upiId %></p>
+        <p><strong>Amount:</strong> ₹<%= pendingOrder.summary.totalAmount %></p>
+        <a class="btn secondary" href="<%= pendingOrder.upiLink %>">Open UPI App</a>
+      </div>
+    </div>
+    <form method="POST" action="/orders/confirm" class="confirm-form">
+      <label class="checkbox">
+        <input type="checkbox" required />
+        I checked the amount and understand that payment status will be verified by admin.
+      </label>
+      <button class="btn primary full-width" type="submit">Submit Order</button>
+    </form>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

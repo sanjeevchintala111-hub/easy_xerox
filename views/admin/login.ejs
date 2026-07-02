@@ -1,0 +1,22 @@
+<%- include('../partials/header') %>
+
+<section class="section auth-section">
+  <form method="POST" action="/admin/login" class="card auth-card">
+    <span class="badge">Admin</span>
+    <h1>Admin Login</h1>
+    <p>Login to manage orders, pricing, payment status, and settings.</p>
+    <label>
+      Username
+      <input type="text" name="username" required placeholder="admin" />
+      <small>Set this using ADMIN_USERNAME in .env</small>
+    </label>
+    <label>
+      Password
+      <input type="password" name="password" required placeholder="Enter admin password" />
+      <small>Password is verified on backend only.</small>
+    </label>
+    <button class="btn primary full-width" type="submit">Login</button>
+  </form>
+</section>
+
+<%- include('../partials/footer') %>
