@@ -1,4 +1,8 @@
+const dns = require('dns');
 const mongoose = require('mongoose');
+
+// Use public DNS servers for MongoDB SRV lookup
+dns.setServers(['8.8.8.8', '1.1.1.1']);
 
 async function connectDB() {
   const mongoUri = process.env.MONGO_URI;
@@ -8,7 +12,9 @@ async function connectDB() {
   }
 
   mongoose.set('strictQuery', true);
+
   await mongoose.connect(mongoUri);
+
   console.log('✅ MongoDB connected');
 }
 

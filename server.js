@@ -21,6 +21,7 @@ app.use(
     contentSecurityPolicy: false,
   })
 );
+
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -45,8 +46,10 @@ app.use(async (req, res, next) => {
     res.locals.currentPath = req.path;
     res.locals.success = req.session.success;
     res.locals.error = req.session.error;
+
     delete req.session.success;
     delete req.session.error;
+
     next();
   } catch (error) {
     next(error);
@@ -65,20 +68,28 @@ app.use((req, res) => {
 
 app.use((error, req, res, next) => {
   console.error(error);
+
   const statusCode = error.status || 500;
+
   res.status(statusCode).render('error', {
     title: 'Something went wrong',
     message: error.message || 'Unexpected server error.',
   });
 });
 
-connectDB()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running at http://localhost:${PORT}`);
+// Export the Express app for Vercel
+module.exports = app;
+
+// Start the server locally
+if (!process.env.VERCEL) {
+  connectDB()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`🚀 Server running at http://localhost:${PORT}`);
+      });
+    })
+    .catch((error) => {
+      console.error('❌ Failed to start server:', error.message);
+      process.exit(1);
     });
-  })
-  .catch((error) => {
-    console.error('❌ Failed to start server:', error.message);
-    process.exit(1);
-  });
+}
