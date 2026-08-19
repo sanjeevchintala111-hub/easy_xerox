@@ -27,16 +27,22 @@ async function connectDB() {
 
   mongoose.set('strictQuery', true);
 
+  console.log('🔄 Attempting MongoDB connection...');
+
   connectionPromise = mongoose
     .connect(mongoUri, {
       serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
+      socketTimeoutMS: 10000,
     })
     .then((mongooseInstance) => {
       console.log('✅ MongoDB connected');
+
       return mongooseInstance.connection;
     })
     .catch((error) => {
       console.error('❌ MongoDB connection failed:', error);
+
       // Allow another request to try connecting again
       connectionPromise = null;
 
