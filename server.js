@@ -12,7 +12,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const { getSettings } = require('./utils/settings');
 
 const app = express();
-
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
 // --------------------------------------------------
