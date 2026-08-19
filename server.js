@@ -3,6 +3,7 @@ require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
+const { MongoStore } = require('connect-mongo');
 const helmet = require('helmet');
 
 const connectDB = require('./config/db');
@@ -56,10 +57,15 @@ app.use(
 
     saveUninitialized: false,
 
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: 'sessions',
+      ttl: 60 * 60 * 3,
+    }),
+
     cookie: {
       httpOnly: true,
 
-      // Secure cookies on Vercel/production HTTPS
       secure: process.env.NODE_ENV === 'production',
 
       sameSite: 'lax',
@@ -73,7 +79,6 @@ app.use(
 // DATABASE CONNECTION
 // --------------------------------------------------
 
-// Connect to MongoDB before processing requests
 app.use(async (req, res, next) => {
   try {
     await connectDB();
@@ -90,7 +95,6 @@ app.use(async (req, res, next) => {
 // --------------------------------------------------
 
 app.use(async (req, res, next) => {
-  // Available on all EJS pages
   res.locals.currentPath = req.path || '/';
 
   res.locals.isAdmin = Boolean(
@@ -103,7 +107,6 @@ app.use(async (req, res, next) => {
 
   res.locals.settings = {};
 
-  // Remove flash messages after reading them
   if (req.session) {
     delete req.session.success;
     delete req.session.error;
@@ -114,7 +117,6 @@ app.use(async (req, res, next) => {
   } catch (error) {
     console.error('⚠️ Settings error:', error.message);
 
-    // Don't crash the whole application
     res.locals.settings = {};
   }
 
@@ -136,11 +138,8 @@ app.use('/admin', adminRoutes);
 app.use((req, res) => {
   res.status(404).render('error', {
     title: 'Page Not Found',
-
     message: 'The page you are looking for does not exist.',
-
     currentPath: req.path || '/',
-
     isAdmin: Boolean(req.session?.isAdmin),
   });
 });
