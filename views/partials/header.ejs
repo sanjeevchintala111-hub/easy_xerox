@@ -12,14 +12,23 @@
       <span class="brand-icon">X</span>
       <span><%= settings.shopName %></span>
     </a>
+
     <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+
     <div class="nav-links">
-      <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">Home</a>
-      <a href="/upload" class="<%= currentPath.startsWith('/upload') ? 'active' : '' %>">Upload</a>
-      <% if (isAdmin) { %>
+      <a href="/" class="<%= (typeof currentPath !== 'undefined' && currentPath === '/') ? 'active' : '' %>">
+        Home
+      </a>
+
+      <a href="/upload" class="<%= (typeof currentPath !== 'undefined' && currentPath.startsWith('/upload')) ? 'active' : '' %>">
+        Upload
+      </a>
+
+      <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
         <a href="/admin/dashboard">Dashboard</a>
         <a href="/admin/orders">Orders</a>
         <a href="/admin/settings">Settings</a>
+
         <form method="POST" action="/admin/logout" class="inline-form">
           <button type="submit" class="link-button">Logout</button>
         </form>
@@ -28,10 +37,12 @@
       <% } %>
     </div>
   </nav>
+
   <main>
-    <% if (success) { %>
+    <% if (typeof success !== 'undefined' && success) { %>
       <div class="alert success"><%= success %></div>
     <% } %>
-    <% if (error) { %>
+
+    <% if (typeof error !== 'undefined' && error) { %>
       <div class="alert error"><%= error %></div>
     <% } %>
