@@ -5,6 +5,7 @@ const QRCode = require('qrcode');
 const Order = require('../models/Order');
 const { attachUploadBatch, upload } = require('../middleware/upload');
 const { analyzeFiles } = require('../utils/fileAnalyzer');
+const { uploadFileToSupabase } = require('../utils/supabaseStorage');
 const { getSettings } = require('../utils/settings');
 const { calculatePrice } = require('../utils/pricing');
 const { buildUpiLink, buildWhatsAppLink } = require('../utils/payment');
@@ -57,6 +58,18 @@ router.post('/orders/preview', attachUploadBatch, upload.array('documents', 20),
     };
 
     const files = await analyzeFiles(req.files);
+
+for (let i = 0; i < req.files.length; i++) {
+  const uploadedFile = req.files[i];
+
+  const storageInfo = await uploadFileToSupabase(
+    uploadedFile,
+    req.uploadBatchId
+  );
+
+  files[i].storagePath = storageInfo.storagePath;
+  files[i].bucket = storageInfo.bucket;
+}
     const settings = await getSettings();
     const summary = calculatePrice(files, options, settings);
     const orderId = createOrderId();

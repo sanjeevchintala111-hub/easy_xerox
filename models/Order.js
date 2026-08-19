@@ -4,7 +4,14 @@ const FileSchema = new mongoose.Schema(
   {
     originalName: String,
     savedName: String,
+
+    // Permanent Supabase Storage information
+    storagePath: String,
+    bucket: String,
+
+    // Kept for compatibility with older orders
     diskPath: String,
+
     mimeType: String,
     extension: String,
     fileType: String,
