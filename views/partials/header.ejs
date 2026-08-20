@@ -6,8 +6,10 @@
   <title><%= title %> | <%= settings.shopName %></title>
   <link rel="stylesheet" href="/css/style.css" />
 </head>
+
 <body>
   <nav class="navbar">
+
     <a href="/" class="brand">
       <span class="brand-icon">X</span>
       <span><%= settings.shopName %></span>
@@ -16,29 +18,50 @@
     <button class="nav-toggle" aria-label="Toggle menu">☰</button>
 
     <div class="nav-links">
-      <a href="/" class="<%= (typeof currentPath !== 'undefined' && currentPath === '/') ? 'active' : '' %>">
-        Home
-      </a>
-
-      <a href="/upload" class="<%= (typeof currentPath !== 'undefined' && currentPath.startsWith('/upload')) ? 'active' : '' %>">
-        Upload
-      </a>
 
       <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
-        <a href="/admin/dashboard">Dashboard</a>
-        <a href="/admin/orders">Orders</a>
-        <a href="/admin/settings">Settings</a>
+
+        <!-- ADMIN NAVIGATION -->
+
+        <a href="/" class="<%= (typeof currentPath !== 'undefined' && currentPath === '/') ? 'active' : '' %>">
+          Home
+        </a>
+
+        <a href="/admin/dashboard" class="<%= (typeof currentPath !== 'undefined' && currentPath.startsWith('/admin/dashboard')) ? 'active' : '' %>">
+          Dashboard
+        </a>
+
+        <a href="/admin/orders" class="<%= (typeof currentPath !== 'undefined' && currentPath.startsWith('/admin/orders')) ? 'active' : '' %>">
+          Orders
+        </a>
+
+        <a href="/admin/settings" class="<%= (typeof currentPath !== 'undefined' && currentPath.startsWith('/admin/settings')) ? 'active' : '' %>">
+          Settings
+        </a>
 
         <form method="POST" action="/admin/logout" class="inline-form">
           <button type="submit" class="link-button">Logout</button>
         </form>
+
       <% } else { %>
-        <a href="/admin/login">Admin</a>
+
+        <!-- PUBLIC / STUDENT NAVIGATION -->
+
+        <a href="/" class="<%= (typeof currentPath !== 'undefined' && currentPath === '/') ? 'active' : '' %>">
+          Home
+        </a>
+
+        <a href="/upload" class="<%= (typeof currentPath !== 'undefined' && currentPath.startsWith('/upload')) ? 'active' : '' %>">
+          Upload
+        </a>
+
       <% } %>
+
     </div>
   </nav>
 
   <main>
+
     <% if (typeof success !== 'undefined' && success) { %>
       <div class="alert success"><%= success %></div>
     <% } %>
